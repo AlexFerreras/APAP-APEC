@@ -1,19 +1,15 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Typography from '@material-ui/core/Typography'
 import TextField from '@material-ui/core/TextField'
 import Grid from '@material-ui/core/Grid'
-import DateFnsUtils from '@date-io/date-fns'
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-} from '@material-ui/pickers'
 import { useForm } from 'react-hook-form';
 import Button from '@material-ui/core/Button';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
-import { makeStyles } from '@material-ui/core/styles';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
+import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import validateDominicanId from 'validacion-cedula-dominicana';
 
 const title = {
   color: 'black'
@@ -28,40 +24,21 @@ const alignBtnSend = {
   justifyContent: 'flex-end'
 }
 
-const useStyles = makeStyles((theme) => ({
-  formControl: {
-    margin: theme.spacing(1),
-    minWidth: 120,
-  },
-  selectEmpty: {
-    marginTop: theme.spacing(2),
-  },
-}));
-
 const Form = () => {
-  const [selectedDate, setSelectedDate] = useState(new Date())
-  const [documentType, setdocumentType] = React.useState(1)
-  const [moneda, setMoneda] = React.useState(1)
-
+  const [documentType, setdocumentType] = React.useState('Cédula')
   const { register, handleSubmit, errors } = useForm();
-  const classes = useStyles()
+  
 
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
-  };
   const handleChangeDocumentType = (event) => {
     setdocumentType(event.target.value);
-  };
-  const handleChangeMoneda = (event) => {
-    setMoneda(event.target.value);
   };
 
   const onSubmit = (data) => {
     data = {
       ...data,
-      fecha: selectedDate,
+      //fecha: selectedDate,
       tipoDocumento: documentType,
-      moneda: moneda
+      //moneda: moneda
     }
     console.log(data);
   }
@@ -70,7 +47,7 @@ const Form = () => {
     <div>
       <Typography variant="h5" gutterBottom>
         <span style={title}> 
-          Información requerida por la <strong> TSS </strong>
+          Guardar documento <strong> TSS </strong>
         </span>
       </Typography>
 
@@ -92,7 +69,7 @@ const Form = () => {
             />
           </Grid>
           <Grid item xs={6}>
-            <FormControl size="small" variant="outlined" className={classes.formControl}>
+            <FormControl size="small" variant="outlined">
               <InputLabel htmlFor="outlined-age-native-simple">Tipo de documento</InputLabel>
               <Select
                 required
@@ -102,43 +79,52 @@ const Form = () => {
                 onChange={handleChangeDocumentType}
                 label="Tipo de documento"
               >
-                <MenuItem value={1}>Cédula</MenuItem>
-                <MenuItem value={2}>Pasaporte</MenuItem>
+                <MenuItem value={'Cédula'}>Cédula</MenuItem>
+                <MenuItem value={'Pasaporte'}>Pasaporte</MenuItem>
               </Select>
             </FormControl>
           </Grid>
           <Grid item xs={6}>
-            <TextField
-              name="documento"
-              error={errors.documento ? true : false}
-              helperText={errors.documento && errors.documento.message}
-              inputRef={register({required: "El documento es obligatorio", 
-                minLength: {value: 11, message: "La longitud mínima debe ser igual a 11"}, 
-                maxLength: {value: 11, message: "La longitud máxima debe ser igual a 11"}})}
-              fullWidth 
-              type="text"
-              label="Documento*"
-              variant="outlined"
-              size="small"
-            />
+            { 
+              documentType === 'Cédula'
+              ? 
+              <TextField
+                name="documento"
+                error={errors.documento ? true : false}
+                helperText={errors.documento && errors.documento.message}
+                inputRef={register({required: "La cédula es obligatoria", 
+                  minLength: {value: 11, message: "La longitud mínima debe ser igual a 11"}, 
+                  maxLength: {value: 11, message: "La longitud máxima debe ser igual a 11"},
+                  pattern: {
+                    value: /^\d+$/,
+                    message: "Solo se adminten números positivos"
+                  },
+                  validate: validateDominicanId
+                })}
+                fullWidth 
+                type="text"
+                label="Introduzca la cédula*"
+                variant="outlined"
+                size="small"
+              />
+              : 
+              <TextField
+                name="documento"
+                error={errors.documento ? true : false}
+                helperText={errors.documento && errors.documento.message}
+                inputRef={register({required: "El documento es obligatorio", 
+                  minLength: {value: 11, message: "La longitud mínima debe ser igual a 11"}, 
+                  maxLength: {value: 11, message: "La longitud máxima debe ser igual a 11"}})}
+                fullWidth 
+                type="text"
+                label="Introduzca el pasaporte*"
+                variant="outlined"
+                size="small"
+              />
+            }
+            
           </Grid>
-          <Grid item xs={2}>
-            <FormControl size="small" variant="outlined" className={classes.formControl}>
-              <InputLabel htmlFor="outlined-age-native-simple">Moneda</InputLabel>
-              <Select
-                required
-                labelId="demo-simple-select-outlined-label"
-                id="demo-simple-select-outlined"
-                value={moneda}
-                onChange={handleChangeMoneda}
-                label="Moneda"
-              >
-                <MenuItem value={1}>DOP</MenuItem>
-                <MenuItem value={2}>USD</MenuItem>
-              </Select>
-            </FormControl>
-          </Grid>
-          <Grid item xs={5}>
+          <Grid item xs={6}>
             <TextField
               name="salarioCotizable"
               error={errors.salarioCotizable ? true : false}
@@ -157,7 +143,7 @@ const Form = () => {
               size="small"
             />
           </Grid>
-          <Grid item xs={5}>
+          <Grid item xs={6}>
             <TextField
               name="aporteVoluntario"
               error={errors.aporteVoluntario ? true : false}
@@ -176,40 +162,10 @@ const Form = () => {
               size="small"
             />
           </Grid>
-          <Grid item xs={6}>
-            <TextField
-              name="rnc"
-              error={errors.rnc ? true : false}
-              helperText={errors.rnc && errors.rnc.message}
-              inputRef={register({required: "El RNC es obligatorio", 
-                minLength: {value: 13, message: "La longitud mínima debe ser igual a 13"}, 
-                maxLength: {value: 13, message: "La longitud máxima debe ser igual a 13"}})}
-              fullWidth 
-              type="text"
-              label="RNC*"
-              variant="outlined"
-              size="small"
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <KeyboardDatePicker
-                autoOk
-                variant="inline"
-                inputVariant="outlined"
-                label="Fecha*"
-                size="small"
-                format="dd/MM/yyyy"
-                value={selectedDate}
-                InputAdornmentProps={{ position: "start" }}
-                onChange={date => handleDateChange(date)}
-              />
-            </MuiPickersUtilsProvider>
-          </Grid>
           <Grid item xs={12}>
             <div style={alignBtnSend}>
               <Button type="submit" variant="contained" color="primary">
-                Enviar datos
+                Guardar datos &nbsp; <CloudUploadIcon />
               </Button>
             </div>
           </Grid>
