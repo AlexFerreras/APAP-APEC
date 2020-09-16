@@ -10,6 +10,8 @@ import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import validateDominicanId from 'validacion-cedula-dominicana';
+import post from '../../services/post'
+import LinearIndeterminate from '../Loading'
 
 const title = {
   color: 'black'
@@ -25,22 +27,24 @@ const alignBtnSend = {
 }
 
 const Form = () => {
-  const [documentType, setdocumentType] = React.useState('Cédula')
+  const [isLoading, setIsLoading] = React.useState(false)
+  const [documentType, setdocumentType] = React.useState('Cedula')
   const { register, handleSubmit, errors } = useForm();
-  
 
   const handleChangeDocumentType = (event) => {
     setdocumentType(event.target.value);
   };
 
-  const onSubmit = (data) => {
+  async function onSubmit (data) {
     data = {
       ...data,
-      //fecha: selectedDate,
       tipoDocumento: documentType,
-      //moneda: moneda
     }
-    console.log(data);
+    data.salarioCotizable = Number(data.salarioCotizable)
+    data.aporteVoluntario = data.aporteVoluntario ? data.aporteVoluntario : null
+    setIsLoading(true)
+    await post('empleados', data)
+    setIsLoading(false)
   }
   
   return (
@@ -51,6 +55,8 @@ const Form = () => {
         </span>
       </Typography>
 
+      { isLoading && <LinearIndeterminate /> }
+      
       <form onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={3} style={mt15}>
           <Grid item xs={12}>
@@ -79,14 +85,14 @@ const Form = () => {
                 onChange={handleChangeDocumentType}
                 label="Tipo de documento"
               >
-                <MenuItem value={'Cédula'}>Cédula</MenuItem>
+                <MenuItem value={'Cedula'}>Cédula</MenuItem>
                 <MenuItem value={'Pasaporte'}>Pasaporte</MenuItem>
               </Select>
             </FormControl>
           </Grid>
           <Grid item xs={6}>
             { 
-              documentType === 'Cédula'
+              documentType === 'Cedula'
               ? 
               <TextField
                 name="documento"
@@ -148,7 +154,7 @@ const Form = () => {
               name="aporteVoluntario"
               error={errors.aporteVoluntario ? true : false}
               helperText={errors.aporteVoluntario && errors.aporteVoluntario.message}
-              inputRef={register({required: "El aporte voluntario es obligatorio", 
+              inputRef={register({
                 minLength: {value: 1, message: "La longitud mínima debe ser igual a 1"}, 
                 maxLength: {value: 16, message: "La longitud máxima debe ser igual a 16"},
                 pattern: {
@@ -157,7 +163,7 @@ const Form = () => {
                 }})}
               fullWidth 
               type="number"
-              label="Aporte voluntario*"
+              label="Aporte voluntario"
               variant="outlined"
               size="small"
             />

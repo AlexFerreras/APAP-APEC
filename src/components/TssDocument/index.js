@@ -14,6 +14,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
+import post from '../../services/post'
+import LinearIndeterminate from '../Loading'
 
 const title = {
   color: 'black'
@@ -29,6 +31,7 @@ const alignBtnSend = {
 }
 
 const TssDocument = () => {
+  const [isLoading, setIsLoading] = React.useState(false)
   const [selectedDate, setSelectedDate] = useState(new Date())
   const [moneda, setMoneda] = React.useState('DOP')
 
@@ -42,14 +45,26 @@ const TssDocument = () => {
     setMoneda(event.target.value);
   };
 
-  const onSubmit = (data) => {
+  async function onSubmit(data) {
     data = {
       ...data,
       fecha: selectedDate,
       moneda: moneda
     }
-    console.log(data);
+    setIsLoading(true)
+    const response = await post('empleados/generar-archivo', data)
+    setIsLoading(false)
+    createFile(response)
   }
+
+  function createFile(data) {
+    const element = document.createElement("a")
+    const file = new Blob([atob(data)], {type: 'text/plain'})
+    element.href = URL.createObjectURL(file)
+    element.download = "tss.txt"
+    document.body.appendChild(element)
+    element.click()
+  } 
   
   return (
     <div>
@@ -59,6 +74,8 @@ const TssDocument = () => {
         </span>
       </Typography>
 
+      { isLoading && <LinearIndeterminate /> }
+      
       <form onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={3} style={mt15}>
           <Grid item xs={6}>
