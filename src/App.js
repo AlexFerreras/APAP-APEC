@@ -10,7 +10,7 @@ import {
 } from "react-router-dom";
 
 const styles = {
-  paddingTop: 30
+  paddingTop: 0
 }
 
 const App = () => {
@@ -21,9 +21,11 @@ const App = () => {
         <Router>
           <Switch>
             <Route path="/upload">
+              <h1> TSS </h1>
               <Upload />
             </Route>
             <Route path="/">
+              <h1> Ferreteria </h1>
               <Download />
             </Route>
           </Switch>

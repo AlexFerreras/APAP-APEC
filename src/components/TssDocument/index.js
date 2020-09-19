@@ -70,7 +70,7 @@ const TssDocument = () => {
     <div>
       <Typography variant="h5" gutterBottom>
         <span style={title}> 
-          Descargar documento <strong> TSS </strong>
+          Descargar documento
         </span>
       </Typography>
 

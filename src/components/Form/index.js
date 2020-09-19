@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { forceUpdate } from 'react'
 import Typography from '@material-ui/core/Typography'
 import TextField from '@material-ui/core/TextField'
 import Grid from '@material-ui/core/Grid'
@@ -32,8 +32,8 @@ const Form = () => {
   const { register, handleSubmit, errors } = useForm();
 
   const handleChangeDocumentType = (event) => {
-    setdocumentType(event.target.value);
-  };
+    setdocumentType(event.target.value)
+  }
 
   async function onSubmit (data) {
     data = {
@@ -51,7 +51,7 @@ const Form = () => {
     <div>
       <Typography variant="h5" gutterBottom>
         <span style={title}> 
-          Guardar documento <strong> TSS </strong>
+          Guardar empleado
         </span>
       </Typography>
 
@@ -94,25 +94,25 @@ const Form = () => {
             { 
               documentType === 'Cedula'
               ? 
-              <TextField
-                name="documento"
-                error={errors.documento ? true : false}
-                helperText={errors.documento && errors.documento.message}
-                inputRef={register({required: "La cédula es obligatoria", 
-                  minLength: {value: 11, message: "La longitud mínima debe ser igual a 11"}, 
-                  maxLength: {value: 11, message: "La longitud máxima debe ser igual a 11"},
-                  pattern: {
-                    value: /^\d+$/,
-                    message: "Solo se adminten números positivos"
-                  },
-                  validate: validateDominicanId
-                })}
-                fullWidth 
-                type="text"
-                label="Introduzca la cédula*"
-                variant="outlined"
-                size="small"
-              />
+                <TextField
+                  name="documento"
+                  error={errors.documento ? true : false}
+                  helperText={errors.documento && errors.documento.message}
+                  inputRef={register({required: "La cédula es obligatoria", 
+                    minLength: {value: 11, message: "La longitud mínima debe ser igual a 11"}, 
+                    maxLength: {value: 11, message: "La longitud máxima debe ser igual a 11"},
+                    pattern: {
+                      value: /^\d+$/,
+                      message: "Solo se adminten números positivos"
+                    },
+                    validate: validateDominicanId
+                  })}
+                  fullWidth 
+                  type="text"
+                  label="Introduzca la cédula*"
+                  variant="outlined"
+                  size="small"
+                />
               : 
               <TextField
                 name="documento"
