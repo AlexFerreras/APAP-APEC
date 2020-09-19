@@ -59,7 +59,7 @@ const TssDocument = () => {
 
   function createFile(data) {
     const element = document.createElement("a")
-    const file = new Blob([atob(data)], {type: 'text/plain'})
+    const file = new Blob([atob(data.data)], {type: 'text/plain'})
     element.href = URL.createObjectURL(file)
     element.download = "tss.txt"
     document.body.appendChild(element)

@@ -20,7 +20,7 @@ const padding = {
   padding: '10px 10px 10px 10px',
 }
 
-const Body = () => {
+const Downlaod = () => {
   const classes = useStyles();
   return (
     <div>
@@ -44,4 +44,4 @@ const Body = () => {
   )
 }
 
-export default Body;
+export default Downlaod;

@@ -14,8 +14,10 @@
     "date-fns": "^2.16.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-dropzone": "^11.2.0",
     "react-hook-form": "^6.8.1",
-    "react-scripts": "3.4.3",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "^3.4.3",
     "react-text-mask": "^5.4.3",
     "validacion-cedula-dominicana": "^1.0.9"
   },

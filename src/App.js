@@ -1,7 +1,13 @@
 import React from 'react';
 import Container from '@material-ui/core/Container';
 import Header from './layout/Header'
-import Body from './layout/Body'
+import Download from './layout/Download'
+import Upload from './layout/Upload'
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route
+} from "react-router-dom";
 
 const styles = {
   paddingTop: 30
@@ -12,7 +18,16 @@ const App = () => {
     <div>
       <Header />
       <Container maxWidth="xl" style={styles}>
-        <Body />
+        <Router>
+          <Switch>
+            <Route path="/upload">
+              <Upload />
+            </Route>
+            <Route path="/">
+              <Download />
+            </Route>
+          </Switch>
+        </Router>
       </Container>
     </div>
   )

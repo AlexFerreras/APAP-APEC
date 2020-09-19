@@ -1,5 +1,6 @@
 import axios from 'axios'
-import apiUrl from '../config/apiUrl'
+
+const apiUrl = 'https://eaa66a991dd0.ngrok.io/'
 
 async function post (endpoint, model) {
     return axios.post(`${apiUrl}${endpoint}`,  model);
