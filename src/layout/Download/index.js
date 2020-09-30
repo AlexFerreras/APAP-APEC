@@ -1,9 +1,9 @@
-import React from 'react'
-import { makeStyles } from '@material-ui/core/styles'
-import Paper from '@material-ui/core/Paper'
-import Grid from '@material-ui/core/Grid'
-import Form from '../../components/Form'
-import TssDocument from '../../components/TssDocument'
+import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import Paper from "@material-ui/core/Paper";
+import Grid from "@material-ui/core/Grid";
+import Form from "../../components/Form";
+import APAPDocument from "../../components/APAPDocument";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -11,14 +11,14 @@ const useStyles = makeStyles((theme) => ({
   },
   paper: {
     padding: theme.spacing(2),
-    textAlign: 'center',
+    textAlign: "center",
     color: theme.palette.text.secondary,
   },
 }));
 
 const padding = {
-  padding: '10px 10px 10px 10px',
-}
+  padding: "10px 10px 10px 10px",
+};
 
 const Downlaod = () => {
   const classes = useStyles();
@@ -35,13 +35,13 @@ const Downlaod = () => {
         <Grid item xs={12}>
           <Paper className={classes.paper}>
             <div style={padding}>
-              <TssDocument />
+              <APAPDocument />
             </div>
           </Paper>
         </Grid>
       </Grid>
     </div>
-  )
-}
+  );
+};
 
 export default Downlaod;
