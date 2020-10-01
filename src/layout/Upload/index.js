@@ -28,7 +28,7 @@ const Upload = () => {
 
   async function sendData() {
     setIsLoading(true);
-    await post("empleados/leer-archivo", { data: base64 });
+    await post("/empleados/leer-archivo", { data: base64 });
     setIsLoading(false);
   }
 

@@ -1,9 +1,9 @@
-import axios from 'axios'
+import axios from "axios";
 
-const apiUrl = 'https://eaa66a991dd0.ngrok.io/'
+const apiUrl = "https://8f2e045d4012.ngrok.io";
 
-async function post (endpoint, model) {
-    return axios.post(`${apiUrl}${endpoint}`,  model);
+async function post(endpoint, model) {
+  return axios.post(`${apiUrl}${endpoint}`, model);
 }
 
 export default post;

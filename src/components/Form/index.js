@@ -40,12 +40,13 @@ const Form = () => {
     data = {
       ...data,
       tipoDocumento: documentType,
-      tipocuenta: accountType,
+      tipoCuenta: accountType,
     };
-    data.sueldo = Number(data.sueldo);
+    data.salarioCotizable = Number(data.salarioCotizable);
     setIsLoading(true);
     console.log(JSON.stringify(data, null, 2));
-    await post("empleados", data);
+    await post("/empleados", data);
+
     setIsLoading(false);
   }
 
@@ -131,7 +132,7 @@ const Form = () => {
           </Grid>
           <Grid item xs={12}>
             <TextField
-              name="numerocuenta"
+              name="numeroCuenta"
               error={errors.numerocuenta ? true : false}
               helperText={errors.numerocuenta && errors.numerocuenta.message}
               inputRef={register({
@@ -177,11 +178,13 @@ const Form = () => {
           </Grid>
           <Grid item xs={6}>
             <TextField
-              name="sueldo"
-              error={errors.sueldo ? true : false}
-              helperText={errors.sueldo && errors.sueldo.message}
+              name="salarioCotizable"
+              error={errors.salarioCotizable ? true : false}
+              helperText={
+                errors.salarioCotizable && errors.salarioCotizable.message
+              }
               inputRef={register({
-                required: "El Sueldo es obligatorio",
+                required: "El salario Cotizable es obligatorio",
                 minLength: {
                   value: 1,
                   message: "La longitud mínima debe ser igual a 1",
@@ -193,7 +196,7 @@ const Form = () => {
               })}
               fullWidth
               type="number"
-              label="Sueldo*"
+              label="salario Cotizable*"
               variant="outlined"
               size="small"
             />

@@ -52,7 +52,7 @@ const APAPDocument = () => {
       moneda: moneda,
     };
     setIsLoading(true);
-    const response = await post("empleados/generar-archivo", data);
+    const response = await post("/empleados/generar-archivo", data);
     setIsLoading(false);
     createFile(response);
   }
